@@ -3,7 +3,9 @@ package main
 import (
     "fmt"  
     "math/rand"
-    "time" )
+    "time"
+    //"os"
+ )
 
 const maxN = 2000
 var N int
@@ -16,13 +18,22 @@ var X []int
 func main() {
     fmt.Println("Hello, world!")
     rand.Seed(time.Now().UnixNano())
-    A := make([][]int, maxN)
+
+    //N = os.Args[1:]
+
+    N = 3
+
+    A = make([][]int, N)
     for i := range A {
-        A[i] = make([]int, maxN)
+        A[i] = make([]int, N)
     }
+    B = make([]int, N)
+    X = make([]int, N)
 
     initialize_in()
     print_in()
+    gaussElimination()
+    print_out()
 }
 
 
@@ -51,6 +62,7 @@ func gaussElimination(){
     }
 }
 
+//FEITO
 func initialize_in(){
     var linha, col int
 
@@ -64,47 +76,33 @@ func initialize_in(){
     }
 }
 
+//FEITO
 func print_in(){
-    var linha, col int
-
-    if N < 10 {       
-        fmt.Println("A = \n\t")
+    var linha, col int        
+        fmt.Println("A")
         for linha = 0; linha < N; linha++ {
             for col = 0; col < N; col++ {
-                fmt.Printf("%d%s", A[linha][col], func() string {
-                    if col < N-1 {
-                        return "; "
-                    }
-                    return "]\n"
-                }())                 
-            }
+                fmt.Printf("%d ", A[linha][col])
         }
-        fmt.Println("B = [")
-        for col := 0; col < N; col++ {
-            fmt.Printf("%d%s", B[col], func() string {
-                if col < N-1 {
-                    return "; "
-                }
-                return "]\n"
-            }())
-            
+        fmt.Println();
         }
-    }
+
+        fmt.Println("B")
+        for col = 0; col < N; col++ {
+            fmt.Printf("%d ", B[col])
+        }
+        fmt.Println();
 }
 
+
 func print_out(){
+
     var linha int
 
     if N < 100 {
-        fmt.Println("X = [")
+        fmt.Println("X")
         for linha = 0; linha < N; linha++ {
-            fmt.Printf("%5.2d%s", X[linha], func() string {
-                if linha < N-1 {
-                    return "; "
-                }
-                return "]\n"
-            }())
-            
+            fmt.Printf("%d ", X[linha])
         }
     }
 }
