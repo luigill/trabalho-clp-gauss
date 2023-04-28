@@ -10,27 +10,27 @@ import (
 const maxN = 2000
 var N int
 
-var A [][]int
-var B []int
-var X []int
+var A [][]float64
+var B []float64
+var X []float64
 
 
 func main() {
-    fmt.Println("Hello, world!")
     rand.Seed(time.Now().UnixNano())
 
     //N = os.Args[1:]
 
     N = 3
 
-    A = make([][]int, N)
+    A = make([][]float64, N)
     for i := range A {
-        A[i] = make([]int, N)
+        A[i] = make([]float64, N)
     }
-    B = make([]int, N)
-    X = make([]int, N)
+    B = make([]float64, N)
+    X = make([]float64, N)
 
-    initialize_in()
+    // initialize_in()
+    initialize_in_test()
     print_in()
     gaussElimination()
     print_out()
@@ -38,62 +38,73 @@ func main() {
 
 
 func gaussElimination(){
-    var norm, linha, col int
+    var norm, linha, col float64
 
-    var multiplier int
+    var multiplier float64
 
-    for norm = 0; norm < N - 1; norm++ {
-        for linha = norm + 1; linha < N; linha++ {
-            multiplier = A[linha][norm] / A[norm][norm]
-            for col = norm; col < N; col++ {
-                A[linha][col] -= A[norm][col] * multiplier
+    for norm = 0; norm < float64(N) - 1; norm++ {
+        for linha = norm + 1; linha < float64(N); linha++ {
+            multiplier = A[int(linha)][int(norm)] / A[int(norm)][int(norm)]
+            for col = norm; col < float64(N); col++ {
+                A[int(linha)][int(col)] -= A[int(norm)][int(col)] * multiplier
             }
-            B[linha] -= B[norm] * multiplier
+            B[int(linha)] -= B[int(norm)] * multiplier
         }   
     }
 
     //Back Substituition
     for linha := N - 1; linha >= 0; linha-- {
-        X[linha] = B[linha]
-        for col := N-1; col > linha; col-- {
-            X[linha] -= A[linha][col] * X[col]
+        X[int(linha)] = B[int(linha)]
+        for col := N-1; col > int(linha); col-- {
+            X[int(linha)] -= A[int(linha)][col] * X[col]
         }    
-        X[linha] /= A[linha][linha]
+        X[int(linha)] /= A[int(linha)][int(linha)]
     }
 }
 
-//FEITO
 func initialize_in(){
     var linha, col int
 
     fmt.Printf("Initializing...\n")
     for col = 0; col < N; col++ {
         for linha = 0; linha < N; linha++ {
-            A[linha][col] = rand.Intn(100)
+            A[linha][col] = rand.Float64() * 2000.0 - 1000.0
         }
-        B[col] = rand.Intn(100)
+        B[col] = rand.Float64() * 2000.0 - 1000.0
         X[col] = 0
     }
 }
 
-//FEITO
+//Inicializa os inputs com um caso de teste corrigido da aplicação original
+func initialize_in_test(){
+	A = [][]float64{
+       {55062.54, 59745.72, 18204.24},
+       {25846.28, 12946.73, 36304.98},
+       {51321.19, 21969.16, 31286.69},
+    }
+
+	B = []float64{52326.57, 50346.70, 41213.68}
+
+    //Resultados Esperados
+    //-0.374256 0.804421 1.366347 
+}
+
 func print_in(){
     var linha, col int        
         fmt.Println("A")
         for linha = 0; linha < N; linha++ {
             for col = 0; col < N; col++ {
-                fmt.Printf("%d ", A[linha][col])
+                fmt.Printf("%f ", A[linha][col])
         }
         fmt.Println();
         }
 
         fmt.Println("B")
         for col = 0; col < N; col++ {
-            fmt.Printf("%d ", B[col])
+            fmt.Printf("%f ", B[col])
         }
         fmt.Println();
 }
-
 
 func print_out(){
 
@@ -102,7 +113,7 @@ func print_out(){
     if N < 100 {
         fmt.Println("X")
         for linha = 0; linha < N; linha++ {
-            fmt.Printf("%d ", X[linha])
+            fmt.Printf("%f ", X[linha])
         }
     }
 }
