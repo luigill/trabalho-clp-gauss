@@ -1,6 +1,7 @@
 # Implementação da Eliminação de Gauss em Rust e Go
 
 Trabalho desenvolvido na disciplina de Conceitos de Linguagens de Programação
+<br>
 Membros do grupo: Louise Queiroz da Silva Bezerra e Lui Gill Aquini
 
 - Na pasta go, é possível executar o programa utilizando o comando:
