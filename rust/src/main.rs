@@ -1,6 +1,6 @@
 use rand::prelude::*;
-use std::{env, usize};
 use std::time::Instant;
+use std::{env, usize};
 
 fn main() {
     let start = Instant::now();
@@ -12,7 +12,7 @@ fn main() {
         return;
     }
 
-    let num:usize = match args[1].parse::<usize>() {
+    let num: usize = match args[1].parse::<usize>() {
         Ok(n) => n,
         Err(_) => {
             println!("Erro: Argumento Inválido");
@@ -37,7 +37,7 @@ fn main() {
     println!("Tempo total de execução: {:?}", duration);
 }
 
-fn gauss_elimination(a: &mut Vec<Vec<f64>>, b: &mut Vec<f64>, n: usize, x: &mut Vec<f64> ) {
+fn gauss_elimination(a: &mut Vec<Vec<f64>>, b: &mut Vec<f64>, n: usize, x: &mut Vec<f64>) {
     for norm in 0..(n - 1) {
         for linha in (norm + 1)..n {
             let multiplier = a[linha][norm] / a[norm][norm];
@@ -47,7 +47,6 @@ fn gauss_elimination(a: &mut Vec<Vec<f64>>, b: &mut Vec<f64>, n: usize, x: &mut 
             b[linha] -= b[norm] * multiplier;
         }
     }
-
     // Back Substituition
     for linha in (0..n).rev() {
         x[linha] = b[linha];
@@ -58,10 +57,10 @@ fn gauss_elimination(a: &mut Vec<Vec<f64>>, b: &mut Vec<f64>, n: usize, x: &mut 
     }
 }
 
-fn initialize_in(a: &mut Vec<Vec<f64>>, b: &mut Vec<f64>, x:  &mut Vec<f64>, n: usize) {
+fn initialize_in(a: &mut Vec<Vec<f64>>, b: &mut Vec<f64>, x: &mut Vec<f64>, n: usize) {
     let mut rng = rand::thread_rng();
- 
-    println!("Initializing...");
+
+    println!("Inicializando...");
     for col in 0..n {
         for linha in 0..n {
             a[linha][col] = rng.gen_range(-1000.0..1000.0);
@@ -81,7 +80,7 @@ fn initialize_in_test(a: &mut Vec<Vec<f64>>, b: &mut Vec<f64>) {
     *b = vec![52326.57, 50346.70, 41213.68];
 
     //Resultados Esperados
-    //-0.374256 0.804421 1.366347 
+    //-0.374256 0.804421 1.366347
 }
 
 fn print_in(a: &Vec<Vec<f64>>, b: &Vec<f64>) {

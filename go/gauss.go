@@ -79,7 +79,7 @@ func gaussElimination(){
 func initialize_in(){
     var linha, col int
 
-    fmt.Printf("Initializing...\n")
+    fmt.Printf("Inicializando...\n")
     for col = 0; col < N; col++ {
         for linha = 0; linha < N; linha++ {
             A[linha][col] = rand.Float64() * 2000.0 - 1000.0
