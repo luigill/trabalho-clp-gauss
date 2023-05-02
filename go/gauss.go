@@ -4,11 +4,12 @@ import (
     "fmt"  
     "math/rand"
     "time"
-    //"os"
+    "os"
+    "strconv"
  )
 
-const maxN = 2000
 var N int
+var err error
 
 var A [][]float64
 var B []float64
@@ -16,11 +17,20 @@ var X []float64
 
 
 func main() {
+    start := time.Now()
     rand.Seed(time.Now().UnixNano())
 
-    //N = os.Args[1:]
+    if len(os.Args) < 2 {
+        fmt.Println("Uso: go run gauss.go <int>")
+        return
+    }
 
-    N = 3
+    N, err = strconv.Atoi(os.Args[1])
+    if err != nil {
+        fmt.Println("Erro: Argumento Inválido")
+        return
+    }
+
 
     A = make([][]float64, N)
     for i := range A {
@@ -29,11 +39,15 @@ func main() {
     B = make([]float64, N)
     X = make([]float64, N)
 
-    // initialize_in()
-    initialize_in_test()
+    initialize_in()
+    //initialize_in_test()
     print_in()
     gaussElimination()
     print_out()
+
+    elapsed := time.Since(start)
+    fmt.Println()
+    fmt.Printf("Tempo total de execução: %s\n", elapsed)
 }
 
 

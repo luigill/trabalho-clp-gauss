@@ -1,29 +1,40 @@
 use rand::prelude::*;
-use std::env;
-
-const MAX_N: usize = 2000;
+use std::{env, usize};
+use std::time::Instant;
 
 fn main() {
-    let mut rng = thread_rng();
+    let start = Instant::now();
 
     let args: Vec<String> = env::args().collect();
-    let n: usize = if args.len() > 1 {
-        args[1].parse().unwrap()
-    } else {
-        3
+
+    if args.len() < 2 {
+        println!("Uso: cargo run <int>");
+        return;
+    }
+
+    let num:usize = match args[1].parse::<usize>() {
+        Ok(n) => n,
+        Err(_) => {
+            println!("Erro: Argumento Inválido");
+            return;
+        }
     };
 
-    let mut a = vec![vec![0.0; n]; n];
-    let mut b = vec![0.0; n];
-    let mut x = vec![0.0; n];
+    let mut a = vec![vec![0.0; num]; num];
+    let mut b = vec![0.0; num];
+    let mut x = vec![0.0; num];
 
-    initialize_in_test(&mut a, &mut b);
-
+    initialize_in(&mut a, &mut b, &mut x, num);
+    //initialize_in_test(&mut a, &mut b);
     print_in(&a, &b);
+    gauss_elimination(&mut a, &mut b, num, &mut x);
+    print_out(&x, num);
 
-    gauss_elimination(&mut a, &mut b, n, &mut x);
+    println!();
 
-    print_out(&x, n);
+    let end = Instant::now();
+    let duration = end.duration_since(start);
+    println!("Tempo total de execução: {:?}", duration);
 }
 
 fn gauss_elimination(a: &mut Vec<Vec<f64>>, b: &mut Vec<f64>, n: usize, x: &mut Vec<f64> ) {
@@ -47,6 +58,20 @@ fn gauss_elimination(a: &mut Vec<Vec<f64>>, b: &mut Vec<f64>, n: usize, x: &mut 
     }
 }
 
+fn initialize_in(a: &mut Vec<Vec<f64>>, b: &mut Vec<f64>, x:  &mut Vec<f64>, n: usize) {
+    let mut rng = rand::thread_rng();
+ 
+    println!("Initializing...");
+    for col in 0..n {
+        for linha in 0..n {
+            a[linha][col] = rng.gen_range(-1000.0..1000.0);
+        }
+        b[col] = rng.gen_range(-1000.0..1000.0);
+        x[col] = 0.0;
+    }
+}
+
+//Inicializa os inputs com um caso de teste corrigido da aplicação original
 fn initialize_in_test(a: &mut Vec<Vec<f64>>, b: &mut Vec<f64>) {
     *a = vec![
         vec![55062.54, 59745.72, 18204.24],
@@ -54,6 +79,9 @@ fn initialize_in_test(a: &mut Vec<Vec<f64>>, b: &mut Vec<f64>) {
         vec![51321.19, 21969.16, 31286.69],
     ];
     *b = vec![52326.57, 50346.70, 41213.68];
+
+    //Resultados Esperados
+    //-0.374256 0.804421 1.366347 
 }
 
 fn print_in(a: &Vec<Vec<f64>>, b: &Vec<f64>) {
